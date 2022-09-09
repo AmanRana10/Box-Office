@@ -31,6 +31,18 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "arrow-body-style": [0],
-    "prefer-arrow-callback": [0]
+    "prefer-arrow-callback": [0],
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": true,
+        "variables": false,
+        "allowNamedExports": false
+      }
+    ],
+    "no-param-reassign": 0,
+    "no-console": "off",
+    "no-unused-vars" :"off"
   }
 }
