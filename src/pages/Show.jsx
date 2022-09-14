@@ -6,52 +6,13 @@ import Details from '../components/show/Details';
 import Seasons from '../components/show/Seasons';
 import ShowMainData from '../components/show/ShowMainData';
 import { apiGet } from '../misc/config';
+import { useShowHook } from '../misc/custom-hooks';
 import { InfoBlock, ShowPageWrapper } from './Show.styled';
-
-let INITIAL_STATE = {
-  show: null,
-  isLoading: true,
-  error: null,
-};
-
-const reducer = (prevState, action) => {
-  switch (action.type) {
-    case 'FETCH_SUCCESS': {
-      return { isLoading: false, show: action.show, error: null };
-    }
-
-    case 'FETCH-FAILURE': {
-      return { ...prevState, isLoading: false, error: action.error };
-    }
-    default:
-      return prevState;
-  }
-};
 
 const Show = () => {
   const { id } = useParams();
 
-  const [{ show, isLoading, error }, dispatch] = useReducer(
-    reducer,
-    INITIAL_STATE
-  );
-
-  useEffect(() => {
-    let isMounted = true;
-    apiGet(`/shows/${id}?embed[]=seasons&embed[]=cast`)
-      .then(results => {
-        if (isMounted) {
-          dispatch({ type: 'FETCH_SUCCESS', show: results });
-        }
-      })
-      .catch(err => {
-        dispatch({ type: 'FETCH_FAILED', error: err.message });
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [id]);
+  const {show, isLoading, error} = useShowHook(id);
 
   if (isLoading) return <div>Page is loading</div>;
   console.log('show', show);
